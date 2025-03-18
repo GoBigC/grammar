@@ -54,10 +54,17 @@ statement
     ; 
 
 ifStatement
-    : 'if' '(' expression ')' block
-    | 'if' '(' expression ')' block 'else' block 
-    | 'if' '(' expression ')' block 'else' ifStatement // 'else if' 
+    : 'if' '(' expression ')' block elseBlock?
     ;
+
+elseBlock
+    : 'else' elseBlockRemainder 
+    ; 
+
+elseBlockRemainder 
+    : block 
+    | ifStatement 
+    ; 
 
 nonIfStatement 
     : expression ';'
@@ -96,23 +103,19 @@ expression
     ; 
 
 assignmentExpression
-    : logicalOrExpression
-    | ('=' assignmentExpression)?
+    : logicalOrExpression ('=' assignmentExpression)?
     ; 
 
 logicalOrExpression
-    : logicalAndExpression 
-    | ('||' logicalAndExpression)*
+    : logicalAndExpression ('||' logicalAndExpression)*
     ; 
 
 logicalAndExpression
-    : equalityExpression
-    | ('&&' equalityExpression)*
+    : equalityExpression ('&&' equalityExpression)*
     ; 
 
 equalityExpression
-    : comparisonExpression
-    | (equalityOperator comparisonExpression)*
+    : comparisonExpression (equalityOperator comparisonExpression)*
     ; 
 
 equalityOperator 
@@ -121,8 +124,7 @@ equalityOperator
     ; 
 
 comparisonExpression 
-    : additionExpression 
-    | (comparisonOperator additionExpression)* 
+    : additionExpression (comparisonOperator additionExpression)* 
     ; 
 
 comparisonOperator
@@ -133,8 +135,7 @@ comparisonOperator
     ; 
 
 additionExpression
-    : multiplicationExpression 
-    | (addSubtractOperator multiplicationExpression)*
+    : multiplicationExpression (addSubtractOperator multiplicationExpression)*
     ; 
 
 addSubtractOperator 
@@ -143,8 +144,7 @@ addSubtractOperator
     ; 
 
 multiplicationExpression
-    : unaryExpression 
-    | (multDivModOperator unaryExpression)*
+    : unaryExpression (multDivModOperator unaryExpression)*
     ; 
 
 multDivModOperator
@@ -164,7 +164,7 @@ unaryOperator
     ;
 
 postfixExpression 
-    : primaryExpression (arrayAccess | functionCallArgs | increaseDecrease)
+    : primaryExpression (arrayAccess | functionCallArgs | increaseDecrease)*
     ; 
 
 arrayAccess 
@@ -172,9 +172,12 @@ arrayAccess
     ; 
 
 functionCallArgs
-    : '(' ')' 
-    | '(' argList ')'
+    : '(' argList ')' // if a function returns anything, it must accept at least 1 arg --> motivate user to not produce side effect?
     ; 
+
+// functionCallArgs
+//     : '(' argList? ')' // originally i wrote this, but it generates warning land LL(1)? false
+//     ; 
 
 increaseDecrease
     : '++'  // postfix
