@@ -1,3 +1,19 @@
 grammar VariableAssignment; 
 
-import Terminals, PrimitiveTypes; 
+import Terminals, FunctionCallExpression; 
+
+expression 
+    : assignmentExpression 
+    ;
+
+assignmentExpression
+    : logicalOrExpression assignmentRest?
+    ;
+
+assignmentRest
+    : '=' assignmentExpression
+    ;
+
+variableInitializer
+    : '=' expression ';'
+    ;

@@ -1,37 +1,19 @@
-grammar BigC; 
+grammar BigC;
 
-import  ConstantDefinition, VariableAssignment,
-        IfStatement, WhileLoop, Terminals, 
-        PrimitiveTypes, FunctionDefinition, 
-        ArithmeticExpression, FunctionCallExpression, 
-        LogicalExpression;
+import ConstantDefinition, VariableAssignment, IfStatement, WhileLoop, Terminals, PrimitiveTypes, FunctionDefinition, ArithmeticExpression, FunctionCallExpression, LogicalExpression;
 
-program 
-    : (statement)* EOF
-    ; 
+// Expression precedence (from highest to lowest):
+// 1. Primary expressions (constants, variables, parenthesized)
+// 2. Postfix operations (arr[i], fn(), x++, x--)
+// 3. Unary operations (++x, --x)
+// 4. Multiplicative (*, /, %)
+// 5. Additive (+, -)
+// 6. Comparison (<, <=, >=, >)
+// 7. Equality (==, !=)
+// 8. Logical AND (&&)
+// 9. Logical OR (||)
+// 10. Assignment (=)
 
-statement
-    : assignment
-    | expression
-    | branch
-    | loop
-    ; 
-
-assignment
-    : constantDefinition 
-    | variableAssignment 
-    ; 
-
-expression 
-    : arithmeticExpression 
-    | logicalExpression 
-    | functionCallExpression 
-    ; 
-
-branch 
-    : ifStatement 
-    ; 
-
-loop 
-    : whileLoop 
-    ; 
+program
+    : declaration* EOF
+    ;

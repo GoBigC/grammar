@@ -1,3 +1,16 @@
-grammar IfStatement; 
+grammar IfStatement;
 
-import Terminals, PrimitiveTypes; 
+import Terminals, FunctionDefinition, VariableAssignment;
+
+statement
+    : ifStatement
+    | nonIfStatement
+    ;
+
+ifStatement
+    : 'if' '(' expression ')' block elseClause?
+    ;
+
+elseClause
+    : 'else' (block | ifStatement)
+    ;

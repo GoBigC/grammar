@@ -1,3 +1,7 @@
-grammar ConstantDefinition; 
+grammar ConstantDefinition;
 
-import Terminals, PrimitiveTypes; 
+import Terminals, PrimitiveTypes, VariableAssignment;
+
+constDeclaration
+    : 'const' type Identifier '=' expression ';'
+    ;
