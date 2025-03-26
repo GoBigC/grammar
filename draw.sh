@@ -4,7 +4,7 @@ GRAMMAR_FILE="$1"
 
 mkdir -p out/
 
-antlr4 -atn -Xforce-atn -Xlog $GRAMMAR_FILE -o out/
+antlr4 -atn -Xforce-atn -Xlog -Dlanguage=Go -visitor -listener $GRAMMAR_FILE -o out/
 
 # for file in *.dot; do
 #     output="${file%.dot}.png"
